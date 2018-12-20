@@ -1,81 +1,129 @@
 package com.cse437.alarmapp;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    Button TurnAlarmOn;
-    Button TurnAlarmOff;
 
-    AlarmManager alarmManager;
-    TimePicker timePicker;
+    RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerAdapter recyclerAdapter;
+    public static DBAdapter myDb;
+    Cursor cursor;
+    private List<String> list;
+    Switch sw;
 
-    TextView update_text;
-    PendingIntent pendingIntent;
+    ArrayList<String> Hour;
+    ArrayList<String>Minute;
+    ArrayList<String>Enabled;
+    ArrayList<String>Ringtone;
+    int recordsArrayIndex=0;
+
+    Button addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        update_text=(TextView)findViewById(R.id.update_text);
-        timePicker=(TimePicker)findViewById(R.id.time_picker);
-        alarmManager=(AlarmManager)getSystemService(ALARM_SERVICE);
+        openDB();
+        myDb.deleteAll();
 
-        final Calendar calendar=Calendar.getInstance();
-
-        TurnAlarmOn=(Button)findViewById(R.id.turnOnBtn);
-        TurnAlarmOff=(Button)findViewById(R.id.turnOffBtn);
-
-        final Intent myIntent = new Intent(this.getApplicationContext(),AlarmReceiver.class);
+        list=new ArrayList<String>();
 
 
+        addDummyData();
+        SetListArray();
 
-        TurnAlarmOn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int hour = timePicker.getHour();
-                int minute = timePicker.getMinute();
-                calendar.set(Calendar.HOUR_OF_DAY,hour);
-                calendar.set(Calendar.MINUTE,minute);
 
-                if(minute<10){
-                    update_text.setText("Alarm ON : "+hour+":0"+minute);
-                }
-                else{
-                    update_text.setText("Alarm ON : "+hour+":"+minute);
-                }
+        recyclerView=(RecyclerView)findViewById(R.id.recyclerView);
 
-                myIntent.putExtra("extra","alarm on");
-                //create a pending intent that delays the intent untill the specified calendar time
-                pendingIntent=PendingIntent.getBroadcast(MainActivity.this,0,myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-                Toast.makeText(MainActivity.this, "after initializing pending Intent", Toast.LENGTH_SHORT).show();
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent);
-                Toast.makeText(MainActivity.this, "after alarm manager initialized"+calendar.getTimeInMillis(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        TurnAlarmOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                update_text.setText("Alarm OFF");
-                myIntent.putExtra("extra","alarm off");
-                alarmManager.cancel(pendingIntent);
-                sendBroadcast(myIntent);
-            }
-        });
+        // For the recycler view we need three things : Layout manager, View Holder, Adapter
+        layoutManager= new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerAdapter= new RecyclerAdapter(list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(recyclerAdapter);
 
 
 
 
+
+        AccessDBAndQuery();
+    }
+    private void addDummyData(){
+        long newID=myDb.insertRow("5","30","ringtone","enabled");
+        long newID1=myDb.insertRow("5","45","ringtone","enabled");
+        long newID2=myDb.insertRow("6","30","dsf","notenabled");
+    }
+
+    private void AccessDBAndQuery() {
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        closeDB();
+    }
+
+    private void openDB() {
+        myDb = new DBAdapter(this);
+        myDb.open();
+    }
+    private void closeDB() {
+        myDb.close();
+    }
+    public void SetListArray(){
+        Cursor cursor = MainActivity.myDb.getAllRows();
+        displayRecordSet(cursor);
+    }
+
+    private void displayRecordSet(Cursor cursor) {
+        if(cursor.moveToFirst()){
+            do {
+                // Process the data:
+
+                int id = cursor.getInt(DBAdapter.COL_ROWID);
+                String hour = cursor.getString(DBAdapter.COL_HOUR);
+                String minute = cursor.getString(DBAdapter.COL_MINUTE);
+                String ringtone = cursor.getString(DBAdapter.COL_RINGTONE);
+                String enabled = cursor.getString(DBAdapter.COL_Enabled);
+
+                Log.i("MINA","Passed1");
+
+                // Append data to the message:
+                String r = id
+                        +", " + hour
+                        +", " + minute
+                        +", " + ringtone
+                        +", " + enabled
+                        +"\n";
+//
+//                Hour.add(recordsArrayIndex,hour);
+//                Minute.add(recordsArrayIndex,minute);
+//                Ringtone.add(recordsArrayIndex,ringtone);
+//                Enabled.add(recordsArrayIndex,enabled);
+//                Log.i("MINA","Passed2");
+
+                list.add(recordsArrayIndex,r);
+                Log.i("MINA","Passed3");
+                // [TO_DO_B6]
+                // Create arraylist(s)? and use it(them) in the list view
+                recordsArrayIndex++;
+            } while(cursor.moveToNext());
+        }
     }
 }
