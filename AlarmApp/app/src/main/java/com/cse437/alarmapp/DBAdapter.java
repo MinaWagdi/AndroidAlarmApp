@@ -161,6 +161,19 @@ public class DBAdapter {
         // Insert it into the database.
         return db.update(DATABASE_TABLE, newValues, where, null) != 0;
     }
+    public boolean updateRow(long rowId,String en) {
+        String where = KEY_ROWID + "=" + rowId;
+
+        // [TO_DO_A8]
+        // Update data in the row with new fields.
+        // Also change the function's arguments to be what you need!
+        // Create row's data:
+        ContentValues newValues = new ContentValues();
+        newValues.put(enabled, en);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE, newValues, where, null) != 0;
+    }
 
 
     // ==================

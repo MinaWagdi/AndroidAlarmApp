@@ -1,18 +1,24 @@
 package com.cse437.alarmapp;
 
+import android.database.Cursor;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import org.w3c.dom.Text;
 
 import java.util.List;
+
+import hari.floatingtoast.FloatingToast;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
 
@@ -33,7 +39,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     // From this method we can assign data to the view components in the myViewHolder object
     @Override
-    public void onBindViewHolder(MyViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final MyViewHolder viewHolder, int i) {
+        final int position = i;
         viewHolder.AlarmInfo.setText(list.get(i));
         if(list.get(i).contains("notenabled")){
             viewHolder.s.setChecked(false);
@@ -41,15 +48,36 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         else{
             viewHolder.s.setChecked(true);
         }
+        viewHolder.s.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = MainActivity.pointerToDbID.get(position);
+                Log.i("MINA","id is "+id);
+                if(viewHolder.s.isChecked()){
+                    MainActivity.myDb.updateRow(id,"enabled");
+                    FloatingToast toast = FloatingToast.makeToast(viewHolder.s, "ALARM ENABLED", FloatingToast.LENGTH_MEDIUM);
+                    toast.show();
+                }else{
+                    MainActivity.myDb.updateRow(id,"notenabled");
+                    FloatingToast toast = FloatingToast.makeToast(viewHolder.s, "ALARM DISABLED", FloatingToast.LENGTH_MEDIUM);
+                    toast.show();
 
-//        viewHolder.s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if(isChecked){
-//                    MainActivity.myDb.updateRow(i+1)
-//                }
-//            }
-//        });
+//                    FloatingToast.makeToast(viewHolder.s, "Alarm Disabled", FloatingToast.LENGTH_LONG)
+//                            .setGravity(FloatingToast.GRAVITY_MID_TOP)
+//                            .setFadeOutDuration(FloatingToast.FADE_DURATION_LONG)
+//                            .setTextSizeInDp(12)
+//                            .setBackgroundBlur(true)
+//                            .setFloatDistance(FloatingToast.DISTANCE_SHORT)
+//                            .setTextColor(Color.parseColor("#ffffff"))
+//                            .setShadowLayer(5, 1, 1, Color.parseColor("#000000"))
+//                            .setTextTypeface(customFont)
+//                            .show();
+
+                }
+                MainActivity.replaceItem(position);
+                notifyDataSetChanged();
+            }
+        });
 
 
     }

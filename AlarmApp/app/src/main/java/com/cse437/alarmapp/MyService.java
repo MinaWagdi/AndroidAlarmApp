@@ -24,8 +24,6 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("MINA","onStartCommand");
-        Toast.makeText(this, "onStartCommand", Toast.LENGTH_SHORT).show();
         String state = intent.getExtras().getString("extra");
         switch (state) {
             case "alarm on":

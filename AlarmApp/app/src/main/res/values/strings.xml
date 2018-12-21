@@ -3,4 +3,5 @@
     <string name="turn_alarm_off">Turn Alarm Off</string>
     <string name="set_alarm_on">Set Alarm On</string>
     <string name="add_alarm">Add Alarm</string>
+    <string name="please_focus_on_qr_code">Please focus on QR code</string>
 </resources>
