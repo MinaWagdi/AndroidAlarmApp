@@ -29,6 +29,7 @@ public class DBAdapter {
     public static final String minute = "minute";
     public static final String ringtone = "ringtone";
     public static final String enabled = "enabled";
+    public static final String AlarmManagerRequestCode = "req0";
 
     // [TO_DO_A3]
     // Update the field numbers here (0 = KEY_ROWID, 1=...)
@@ -36,10 +37,11 @@ public class DBAdapter {
     public static final int COL_MINUTE = 2;
     public static final int COL_RINGTONE = 3;
     public static final int COL_Enabled = 4;
+    public static final int ALARM_CODE = 5;
 
     // [TO_DO_A4]
     // Update the ALL-KEYS string array
-    public static final String[] ALL_KEYS = new String[]{KEY_ROWID, Hour, minute, ringtone,enabled};
+    public static final String[] ALL_KEYS = new String[]{KEY_ROWID, Hour, minute, ringtone,enabled,AlarmManagerRequestCode};
 
     // [TO_DO_A5]
     // DB info: db name and table name.
@@ -59,7 +61,8 @@ public class DBAdapter {
                     + Hour + " string not null, "
                     + minute + " string not null, "
                     + ringtone + " string not null, "
-                    + enabled + " string not null"
+                    + enabled + " string not null, "
+                    + AlarmManagerRequestCode + " string not null"
                     + ");";
 
     // Context of application who uses us.
@@ -89,7 +92,7 @@ public class DBAdapter {
     }
 
     // Add a new set of values to the database.
-    public long insertRow(String hour, String min, String ring,String en) {
+    public long insertRow(String hour, String min, String ring,String en,String code) {
         // [TO_DO_A8]
         // Update data in the row with new fields.
         // Also change the function's arguments to be what you need!
@@ -99,6 +102,7 @@ public class DBAdapter {
         initialValues.put(minute, min);
         initialValues.put(ringtone, ring);
         initialValues.put(enabled, en);
+        initialValues.put(AlarmManagerRequestCode, code);
 
         // Insert it into the database.
         return db.insert(DATABASE_TABLE, null, initialValues);
@@ -145,7 +149,7 @@ public class DBAdapter {
     }
 
     // Change an existing row to be equal to new data.
-    public boolean updateRow(long rowId, String hour, String min, String ring,String en) {
+    public boolean updateEnabled(long rowId, String hour, String min, String ring, String en,String code) {
         String where = KEY_ROWID + "=" + rowId;
 
         // [TO_DO_A8]
@@ -157,11 +161,20 @@ public class DBAdapter {
         newValues.put(minute, min);
         newValues.put(ringtone, ring);
         newValues.put(enabled, en);
+        newValues.put(AlarmManagerRequestCode, code);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE, newValues, where, null) != 0;
     }
-    public boolean updateRow(long rowId,String en) {
+    public boolean updateEnabled(long rowId, String en) {
+        String where = KEY_ROWID + "=" + rowId;
+        ContentValues newValues = new ContentValues();
+        newValues.put(enabled, en);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE, newValues, where, null) != 0;
+    }
+    public boolean updateHour(long rowId,String h) {
         String where = KEY_ROWID + "=" + rowId;
 
         // [TO_DO_A8]
@@ -169,7 +182,16 @@ public class DBAdapter {
         // Also change the function's arguments to be what you need!
         // Create row's data:
         ContentValues newValues = new ContentValues();
-        newValues.put(enabled, en);
+        newValues.put(Hour, h);
+
+        // Insert it into the database.
+        return db.update(DATABASE_TABLE, newValues, where, null) != 0;
+    }
+    public boolean updateMinute(long rowId,String min) {
+        String where = KEY_ROWID + "=" + rowId;
+
+        ContentValues newValues = new ContentValues();
+        newValues.put(minute, min);
 
         // Insert it into the database.
         return db.update(DATABASE_TABLE, newValues, where, null) != 0;

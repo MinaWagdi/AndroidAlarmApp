@@ -4,4 +4,6 @@
     <string name="set_alarm_on">Set Alarm On</string>
     <string name="add_alarm">Add Alarm</string>
     <string name="please_focus_on_qr_code">Please focus on QR code</string>
+    <string name="channel_name">ALARMM</string>
+    <string name="channel_description">WakeUpChannelDescription</string>
 </resources>

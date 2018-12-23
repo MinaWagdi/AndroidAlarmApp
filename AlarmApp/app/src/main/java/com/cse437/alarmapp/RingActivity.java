@@ -1,13 +1,16 @@
 package com.cse437.alarmapp;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -27,6 +30,7 @@ public class RingActivity extends AppCompatActivity {
     BarcodeDetector barcodeDetector;
     CameraSource cameraSource;
     final int requestCameraPermission = 1001;
+    int AlarmRequestCode;
 
 
     @Override
@@ -52,6 +56,9 @@ public class RingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ring);
+
+        AlarmRequestCode=getIntent().getIntExtra("request_code",-1);
+        Log.i(MainActivity.TAG,"Alarm request  Code in ring activity is "+AlarmRequestCode);
 
         cameraPreview = (SurfaceView) findViewById(R.id.cameraPreview);
         txtResult = (TextView) findViewById(R.id.txtResult);
@@ -98,8 +105,13 @@ public class RingActivity extends AppCompatActivity {
                     txtResult.post(new Runnable() {
                         @Override
                         public void run() {
+
                             Vibrator vibrator=(Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                             vibrator.vibrate(1000);
+                            MyService.mediaPlayer.stop();
+//                            Intent intent = new Intent(this,AlarmReceiver.class);
+//                            PendingIntent pendingIntent=PendingIntent.getBroadcast(getApplicationContext(), AlarmRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                            AlarmActivity.alarmManager.cancel(pendingIntent);
                             txtResult.setText(qrcodes.valueAt(0).displayValue);
                         }
                     });
@@ -107,4 +119,5 @@ public class RingActivity extends AppCompatActivity {
             }
         });
     }
+
 }

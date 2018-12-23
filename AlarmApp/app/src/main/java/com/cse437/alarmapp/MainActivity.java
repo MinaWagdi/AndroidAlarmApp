@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,43 +26,23 @@ public class MainActivity extends AppCompatActivity {
     public static RecyclerAdapter recyclerAdapter;
     public static DBAdapter myDb;
     public static Cursor cursor;
-    private static List<String> list;
+    public static List<String> list;
     Switch sw;
 
 
     public static ArrayList<Integer>pointerToDbID;
-    ArrayList<String> Hour;
-    ArrayList<String>Minute;
-    ArrayList<String>Enabled;
-    ArrayList<String>Ringtone;
     static int recordsArrayIndex;
-//    ConstraintLayout cl;
     int[] images;
     Button addButton;
+    public static String TAG = "MINA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        images=new int[4];
-//        images[0]=R.drawable.morning1;
-//        images[1]=R.drawable.morning2;
-//        images[2]=R.drawable.morning3;
-//        images[3]=R.drawable.morning4;
-//        int idx = new Random().nextInt(images.length);
-//        int random = images[idx];
-//        cl=(ConstraintLayout)findViewById(R.id.ConstraintLayout);
-//        cl.setBackgroundResource(random);
-        pointerToDbID=new ArrayList<Integer>();
-        Toast.makeText(this, "OnCreate", Toast.LENGTH_SHORT).show();
 
         openDB();
-        list=new ArrayList<String>();
-
         SetListArray();
-
-
-
 
         recyclerView=(RecyclerView)findViewById(R.id.recyclerView);
 
@@ -72,39 +53,31 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(recyclerAdapter);
 
-
+        //to put the divisors between recyclerView Item
+        DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(decoration);
 
         addButton=(Button)findViewById(R.id.AddAlarm);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),AlarmActivity.class);
+                intent.putExtra("Create_Alarm",1);
                 startActivity(intent);
             }
         });
     }
-    private void addDummyData(){
-        long newID=myDb.insertRow("5","30","ringtone","enabled");
-        long newID1=myDb.insertRow("5","45","ringtone","enabled");
-        long newID2=myDb.insertRow("6","30","dsf","notenabled");
-    }
-
-    private void AccessDBAndQuery() {
-
-    }
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        closeDB();
+//        closeDB();
     }
-
     private void openDB() {
         myDb = new DBAdapter(this);
         myDb.open();
     }
     private void closeDB() {
+
         myDb.close();
     }
     public static void SetListArray(){
@@ -112,39 +85,32 @@ public class MainActivity extends AppCompatActivity {
         displayRecordSet(cursor);
 
     }
-
     private static void displayRecordSet(Cursor cursor) {
         recordsArrayIndex=0;
+        pointerToDbID=new ArrayList<Integer>();
+        list=new ArrayList<String>();
         if(cursor.moveToFirst()){
             do {
-                // Process the data:
-
                 int id = cursor.getInt(DBAdapter.COL_ROWID);
                 String hour = cursor.getString(DBAdapter.COL_HOUR);
                 String minute = cursor.getString(DBAdapter.COL_MINUTE);
                 String ringtone = cursor.getString(DBAdapter.COL_RINGTONE);
                 String enabled = cursor.getString(DBAdapter.COL_Enabled);
 
-                Log.i("MINA","Passed1");
-
                 // Append data to the message:
-                String r =id+","+
-                        hour +":" + minute
-                        +", " + ringtone
-                        +", " + enabled
-                        +"\n";
+                String r = hour +":" + minute;
                 pointerToDbID.add(recordsArrayIndex,id);
-
                 list.add(recordsArrayIndex,r);
-                Log.i("MINA","r is "+ r);
-
                 recordsArrayIndex++;
             } while(cursor.moveToNext());
         }
+        else{
+            list=new ArrayList<>();
+            pointerToDbID=new ArrayList<>();
+        }
     }
-
-    public static void replaceItem(int position) {
-        Log.i("MINA","POSITION IS "+position);
+    public static void replaceItemInList(int position) {
+        Log.i(TAG,"POSITION IS "+position);
         int idd = pointerToDbID.get(position);
         cursor = myDb.getRow(idd);
 
@@ -154,13 +120,12 @@ public class MainActivity extends AppCompatActivity {
         String ringtone = cursor.getString(DBAdapter.COL_RINGTONE);
         String enabled = cursor.getString(DBAdapter.COL_Enabled);
 
-        String r =id+","+
-                hour +":" + minute
-                +", " + ringtone
-                +", " + enabled
-                +"\n";
+        String r = hour +":" + minute;
 
         list.set(position,r);
-
+    }
+    public static void deleteItem(int position){
+        list.remove(position);
+        pointerToDbID.remove(position);
     }
 }
