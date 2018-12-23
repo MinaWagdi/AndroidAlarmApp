@@ -52,6 +52,7 @@ public class AlarmActivity extends AppCompatActivity {
         // if this activity was called for editing an
         // existing alarm, get the position of the item to edit
         if(getIntent().getIntExtra("EDIT_ALARM",-1)!=-1){
+            Log.i(MainActivity.TAG,"EDIT ALARM");
             openedActivityForEdit=true;
             PositionToEdit =getIntent().getIntExtra("EDIT_ALARM",-1);
             if(PositionToEdit==-1){
@@ -104,6 +105,7 @@ public class AlarmActivity extends AppCompatActivity {
                     //changes to the alarm manager
                     alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
                     IntentForAlarmReceiver.putExtra("extra", "alarm on");
+                    IntentForAlarmReceiver.putExtra("request_code", req_code);
                     //create a pending intent that delays the intent untill the specified calendar time
                     pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), req_code, IntentForAlarmReceiver, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
