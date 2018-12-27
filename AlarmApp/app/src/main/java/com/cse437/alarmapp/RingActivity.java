@@ -109,10 +109,16 @@ public class RingActivity extends AppCompatActivity {
                             Vibrator vibrator=(Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                             vibrator.vibrate(1000);
                             MyService.mediaPlayer.stop();
+                            txtResult.setText("STOPPED ! WELCOME TO MY WORLD");
+                            for(int i =0;i<100000;i++);//DELAY
+                            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                            startActivity(i);
+
+
 //                            Intent intent = new Intent(this,AlarmReceiver.class);
 //                            PendingIntent pendingIntent=PendingIntent.getBroadcast(getApplicationContext(), AlarmRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 //                            AlarmActivity.alarmManager.cancel(pendingIntent);
-                            txtResult.setText(qrcodes.valueAt(0).displayValue);
+                            //txtResult.setText(qrcodes.valueAt(0).displayValue);
                         }
                     });
                 }

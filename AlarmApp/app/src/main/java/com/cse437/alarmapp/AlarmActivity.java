@@ -64,7 +64,7 @@ public class AlarmActivity extends AppCompatActivity {
 
         timePicker=(TimePicker)findViewById(R.id.time_picker);
         TurnAlarmOn=(Button)findViewById(R.id.turnOnBtn);
-        TurnAlarmOff=(Button)findViewById(R.id.turnOffBtn);
+//        TurnAlarmOff=(Button)findViewById(R.id.turnOffBtn);
 
         alarmManager=(AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
@@ -132,14 +132,14 @@ public class AlarmActivity extends AppCompatActivity {
             }
         });
 
-        TurnAlarmOff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                IntentForAlarmReceiver.putExtra("extra","alarm off");
-                alarmManager.cancel(pendingIntent);
-                sendBroadcast(IntentForAlarmReceiver);
-            }
-        });
+//        TurnAlarmOff.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                IntentForAlarmReceiver.putExtra("extra","alarm off");
+//                alarmManager.cancel(pendingIntent);
+//                sendBroadcast(IntentForAlarmReceiver);
+//            }
+//        });
     }
 
     public void saveRequestCodeInSP(){

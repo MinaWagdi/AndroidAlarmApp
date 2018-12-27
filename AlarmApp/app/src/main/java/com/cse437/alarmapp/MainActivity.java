@@ -3,6 +3,7 @@ package com.cse437.alarmapp;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkFirstRun();
         openDB();
         SetListArray();
 
@@ -127,5 +129,18 @@ public class MainActivity extends AppCompatActivity {
     public static void deleteItem(int position){
         list.remove(position);
         pointerToDbID.remove(position);
+    }
+
+    public void checkFirstRun() {
+        boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("isFirstRun", true);
+        if (isFirstRun){
+            // Place your dialog code here to display the dialog
+
+            getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                    .edit()
+                    .putBoolean("isFirstRun", false)
+                    .apply();
+            new AlertDialog.Builder(this).setTitle("Welcome to the Awesome App :D !").setMessage("If using Android 6.0 or higher, Please disable the battery optimization feature for the app    ").setNeutralButton("OK", null).show();
+        }
     }
 }
