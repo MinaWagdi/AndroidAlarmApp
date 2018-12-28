@@ -85,7 +85,7 @@ public class AlarmActivity extends AppCompatActivity {
                 else{
                     minString=""+minute;
                 }
-                
+
 
                 if(openedActivityForEdit){
                     int id = MainActivity.pointerToDbID.get(PositionToEdit);
