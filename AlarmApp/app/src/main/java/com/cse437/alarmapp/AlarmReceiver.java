@@ -14,8 +14,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i(MainActivity.TAG,"in onReceive");
+
         String message = intent.getExtras().getString("extra");
         alarmCode= intent.getIntExtra("request_code",-1);
+
         if(alarmCode==-1){
             Toast.makeText(context, "alarm Code in AlarmReceiver is -1", Toast.LENGTH_SHORT).show();
             alarmCode=0;

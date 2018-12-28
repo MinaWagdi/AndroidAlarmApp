@@ -76,14 +76,19 @@ public class AlarmActivity extends AppCompatActivity {
                 calendar.set(Calendar.HOUR_OF_DAY,hour);
                 calendar.set(Calendar.MINUTE,minute);
 
-                String hourString=""+hour;
+                String hourString="";
                 String minString="";
                 //Just for formatting
                 if(minute<10){
                     minString="0"+minute;
-                }
-                else{
+                }else{
                     minString=""+minute;
+                }
+
+                if(hour<10){
+                    hourString="0"+hour;
+                }else{
+                    hourString=""+hour;
                 }
 
 

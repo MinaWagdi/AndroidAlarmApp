@@ -105,10 +105,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
                 if(isLongClick){
-                    Toast.makeText(view.getContext(), "isLongClick", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(view.getContext(), "Alarm Deleted", Toast.LENGTH_SHORT).show();
+
                     MainActivity.myDb.deleteRow(MainActivity.pointerToDbID.get(position));
                     MainActivity.deleteItem(position);
-                    Toast.makeText(view.getContext(), "Position is "+position, Toast.LENGTH_SHORT).show();
+
                     notifyItemRemoved(position);
 //                    notifyItemRangeChanged(position,MainActivity.list.size());
 

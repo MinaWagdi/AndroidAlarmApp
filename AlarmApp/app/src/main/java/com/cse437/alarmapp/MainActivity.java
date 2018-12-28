@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public static void replaceItemInList(int position) {
-        Log.i(TAG,"POSITION IS "+position);
         int idd = pointerToDbID.get(position);
         cursor = myDb.getRow(idd);
 
