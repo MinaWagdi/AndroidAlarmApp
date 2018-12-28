@@ -19,13 +19,11 @@ import java.util.Calendar;
 
 public class AlarmActivity extends AppCompatActivity {
     Button TurnAlarmOn;
-    Button TurnAlarmOff;
 
     static AlarmManager alarmManager;
     TimePicker timePicker;
 
     PendingIntent pendingIntent;
-    PendingIntent pendingIntent2;
 
     boolean openedActivityForEdit = false;
     int PositionToEdit = 0;
@@ -87,6 +85,7 @@ public class AlarmActivity extends AppCompatActivity {
                 else{
                     minString=""+minute;
                 }
+                
 
                 if(openedActivityForEdit){
                     int id = MainActivity.pointerToDbID.get(PositionToEdit);
@@ -131,15 +130,6 @@ public class AlarmActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-//        TurnAlarmOff.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                IntentForAlarmReceiver.putExtra("extra","alarm off");
-//                alarmManager.cancel(pendingIntent);
-//                sendBroadcast(IntentForAlarmReceiver);
-//            }
-//        });
     }
 
     public void saveRequestCodeInSP(){
