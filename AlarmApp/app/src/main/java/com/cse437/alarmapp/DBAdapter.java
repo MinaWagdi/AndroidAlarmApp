@@ -100,6 +100,7 @@ public class DBAdapter {
         ContentValues initialValues = new ContentValues();
         initialValues.put(Hour, hour);
         initialValues.put(minute, min);
+        Log.i("MINA","IN DBAdapter , min is "+min);
         initialValues.put(ringtone, ring);
         initialValues.put(enabled, en);
         initialValues.put(AlarmManagerRequestCode, code);

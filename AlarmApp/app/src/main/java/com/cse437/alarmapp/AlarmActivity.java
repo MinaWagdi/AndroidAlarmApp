@@ -127,6 +127,7 @@ public class AlarmActivity extends AppCompatActivity {
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), pendingIntent);
 
                     MainActivity.myDb.insertRow("" + hourString, "" + minString, "ringtone", "enabled","req"+requestCode);
+                    Toast.makeText(AlarmActivity.this, ""+hourString+" : "+minString, Toast.LENGTH_SHORT).show();
                     requestCode++;
                     saveRequestCodeInSP();
                 }

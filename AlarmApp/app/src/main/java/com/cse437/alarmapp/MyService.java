@@ -47,8 +47,8 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
         AlarmCode=intent.getIntExtra("request_code",-1);
-        if(AlarmCode==-1){
-            Log.i(MainActivity.TAG,"Alarm Code in MyService is equal to 1");
+        if(AlarmCode == -1){
+            Log.i(MainActivity.TAG,"Alarm Code in MyService is equal to -1");
             AlarmCode=0;
         }
         else{
@@ -111,7 +111,7 @@ public class MyService extends Service {
             start_id=0;
         }
 //        mediaPlayer=MediaPlayer.create(this,R.raw.ringtone);
-        return Service.START_STICKY;
+        return Service.START_NOT_STICKY;
     }
 
     private void createNotificationChannel() {

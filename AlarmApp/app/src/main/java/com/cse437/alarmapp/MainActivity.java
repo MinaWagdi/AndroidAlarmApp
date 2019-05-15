@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 // Append data to the message:
                 String r = hour +":" + minute;
                 pointerToDbID.add(recordsArrayIndex,id);
+                Log.i("MINA","R is "+r);
                 list.add(recordsArrayIndex,r);
                 recordsArrayIndex++;
             } while(cursor.moveToNext());
