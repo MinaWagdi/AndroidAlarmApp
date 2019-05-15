@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: hari.floatingtoast:floatingtoast:0.1.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/floatingtoast-0.1.0.aar/20c7a7f6e7eae0900ede5fb46be6623e/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/floatingtoast-0.1.0.aar/20c7a7f6e7eae0900ede5fb46be6623e/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/hari.floatingtoast/floatingtoast/0.1.0/a4b4ce0581cc9e986cfd52bf4a238d1f642ba205/floatingtoast-0.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
